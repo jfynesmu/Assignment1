@@ -1,0 +1,43 @@
+class Node {
+    LogEntry data;
+    Node next;
+
+    public Node(LogEntry data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class Queue {
+    private Node front, rear;
+
+    public Queue() {
+        this.front = this.rear = null;
+    }
+
+    public boolean isEmpty() {
+        return front == null;
+    }
+
+    public void enqueue(LogEntry logEntry) {
+        Node newNode = new Node(logEntry);
+        if (rear == null) {
+            front = rear = newNode;
+            return;
+        }
+        rear.next = newNode;
+        rear = newNode;
+    }
+
+    public LogEntry dequeue() {
+        if (isEmpty()) {
+            return null;
+        }
+        LogEntry logEntry = front.data;
+        front = front.next;
+        if (front == null) {
+            rear = null;
+        }
+        return logEntry;
+    }
+}
