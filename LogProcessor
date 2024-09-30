@@ -1,0 +1,51 @@
+public class LogProcessor {
+    private Queue logQueue = new Queue();
+    private Stack errorStack = new Stack();
+    private int infoCount = 0, warnCount = 0, errorCount = 0, memoryWarnings = 0;
+    private String[] last100Errors = new String[100];
+    private int errorIndex = 0;
+
+    public void enqueueLogEntry(String logLine) {
+        LogEntry logEntry = new LogEntry(logLine);
+        logQueue.enqueue(logEntry);
+    }
+
+    public void processLogs() {
+        while (!logQueue.isEmpty()) {
+            LogEntry logEntry = logQueue.dequeue();
+            String logLevel = logEntry.getLogLevel();
+
+            // Count log levels
+            if (logLevel.equals("INFO")) {
+                infoCount++;
+            } else if (logLevel.equals("WARN")) {
+                warnCount++;
+                if (logEntry.getMessage().contains("Memory")) {
+                    memoryWarnings++;
+                }
+            } else if (logLevel.equals("ERROR")) {
+                errorCount++;
+                errorStack.push(logEntry);
+
+                // Track last 100 errors
+                last100Errors[errorIndex % 100] = logEntry.toString();
+                errorIndex++;
+            }
+        }
+    }
+
+    public void printAnalysis() {
+        System.out.println("Log Levels Count:");
+        System.out.println("INFO: " + infoCount);
+        System.out.println("WARN: " + warnCount);
+        System.out.println("ERROR: " + errorCount);
+
+        System.out.println("\nMemory Warnings Count: " + memoryWarnings);
+
+        System.out.println("\nLast 100 Errors:");
+        for (int i = 0; i < 100 && i < errorIndex; i++) {
+            System.out.println(last100Errors[i]);
+        }
+    }
+}
+
