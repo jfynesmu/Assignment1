@@ -1,0 +1,34 @@
+public class LogEntry {
+    private String timestamp;
+    private String logLevel;
+    private String message;
+
+    public LogEntry(String logLine) {
+      
+        String[] parts = logLine.split(" ", 4);
+
+        if (parts.length < 4) {
+            // Handle incorrect log entry format, e.g., print a warning or assign default values
+            System.err.println("Invalid log entry format: " + logLine);
+            this.timestamp = "";
+            this.logLevel = "UNKNOWN";
+            this.message = logLine;  // Store the entire line as the message
+        } else {
+            this.timestamp = parts[0] + " " + parts[1]; // Timestamp
+            this.logLevel = parts[2]; // Log level (INFO, WARN, ERROR)
+            this.message = parts[3]; // Log message
+        }
+    }
+
+    public String getLogLevel() {
+        return logLevel;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String toString() {
+        return "[" + timestamp + "] " + logLevel + " " + message;
+    }
+}
