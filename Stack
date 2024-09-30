@@ -1,0 +1,36 @@
+class StackNode {
+    LogEntry data;
+    StackNode next;
+
+    public StackNode(LogEntry data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class Stack {
+    private StackNode top;
+
+    public Stack() {
+        this.top = null;
+    }
+
+    public boolean isEmpty() {
+        return top == null;
+    }
+
+    public void push(LogEntry logEntry) {
+        StackNode newNode = new StackNode(logEntry);
+        newNode.next = top;
+        top = newNode;
+    }
+
+    public LogEntry pop() {
+        if (isEmpty()) {
+            return null;
+        }
+        LogEntry logEntry = top.data;
+        top = top.next;
+        return logEntry;
+    }
+}
